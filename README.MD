@@ -1,6 +1,7 @@
 # PHP MYSQL
 
 **[La bible PHP sur https://www.php.net/manual/fr](https://www.php.net/manual/fr)**
+**[php codeur](https://phpcodeur.net)**
 
 <!-- TOC -->
 
@@ -20,6 +21,8 @@
 - [Transmettez des donnees de page en page](#transmettez-des-donnees-de-page-en-page)
     - [Transmettez des donnees avec l'URL](#transmettez-des-donnees-avec-lurl)
     - [Transmettez des donnees avec les formulaires](#transmettez-des-donnees-avec-les-formulaires)
+    - [TP : Page protegee par mot de passe](#tp--page-protegee-par-mot-de-passe)
+- [Bug fix](#bug-fix)
 
 <!-- /TOC -->
 
@@ -455,3 +458,22 @@ include("file.php");
 * Le `&`  dans le code a ete remplace par `&amp;` dans le lien. Ça n'a rien à voir avec PHP: simplement, en HTML, on demande a ce que les `&` soient ecrits `&amp;` dans le code source. Si vous ne le faites pas, *le code ne passera pas la validation W3C*.
 
 ## Transmettez des donnees avec les formulaires
+
+* Les formulaires sont le moyen le plus pratique pour le visiteur de transmettre des informations a votre site. PHP est capable de recuperer les donnees saisies par vos visiteurs et de les traiter.
+* Les donnees envoyees via un formulaire se retrouvent dans un array `$_POST`.
+* De la meme maniere que pour les URL, il ne faut pas donner sa confiance absolue aux donnees que vous envoie l'utilisateur. Il pourrait tres bien ne pas remplir tous les champs, voire trafiquer le code HTML de la page pour supprimer ou ajouter des champs. Traitez les donnees avec vigilance.
+* Que ce soit pour des donnees issues de l'URL (`$_GET`) ou d'un formulaire (`$_POST`), il faut s'assurer qu'aucun texte qui vous est envoye ne contient du HTML si celui-ci est destine a etre affiche sur une page. Sinon, vous ouvrez une faille appelee XSS qui peut être nefaste pour la securite de votre site.
+* Pour eviter la faille XSS, il suffit d'appliquer la fonction htmlspecialchars sur tous les textes envoyes par vos visiteurs que vous afficherez.
+* Les formulaires permettent d'envoyer des fichiers. On retrouve les informations sur les fichiers envoyes dans un array `$_FILES`. Leur traitement est cependant plus complexe.
+
+## TP : Page protegee par mot de passe
+
+
+# Bug fix
+
+>**Bug fix Transmettez des donnees**
+* si `$_FILES['monfichier']['error']` return 1 cela signifie que la taille du fichier telecharge excede la valeur de upload_max_filesize, configuree dans le php.ini.
+* si doute sur l'extension du fichier envoye. Interroger `$infosFichier = pathinfo($_FILES['monfichier']['name'])$extension_upload = $infosFichier['extension'];` Exemple MP4 c'est en realite mp4.
+* si vous avez des erreurs lors de l'execution de xdebug telquelle `Notice: Undefined index:` cela signifie qu'il manque une verification isset de vos parametres transmis.
+* si erreur `Warning: move_uploaded_file(file): failed to open stream` verifier que le repertoire cible existe sur le serveur a l'aide de `echo realpath($sTempFileName)` + Check [Bug fix php.net](https://www.php.net/manual/en/function.move-uploaded-file) + verifier votre configuration de fichier php.ini
+* Pour charger votre video sur une page, une erreur peux survenir `web Not allowed to load local resource`.
