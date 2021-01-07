@@ -21,7 +21,14 @@
 - [Transmettez des donnees de page en page](#transmettez-des-donnees-de-page-en-page)
     - [Transmettez des donnees avec l'URL](#transmettez-des-donnees-avec-lurl)
     - [Transmettez des donnees avec les formulaires](#transmettez-des-donnees-avec-les-formulaires)
-    - [TP : Page protegee par mot de passe](#tp--page-protegee-par-mot-de-passe)
+    - [TP1 : Page protegee par mot de passe](#tp1--page-protegee-par-mot-de-passe)
+    - [Variables superglobales](#variables-superglobales)
+    - [Session & Cookies](#session--cookies)
+    - [Lisez et ecrivez dans un fichier](#lisez-et-ecrivez-dans-un-fichier)
+- [Base de donnees](#base-de-donnees)
+    - [Qu'est ce qu'une base de donnees](#quest-ce-quune-base-de-donnees)
+    - [phpMyAdmin](#phpmyadmin)
+    - [Lire les donnees](#lire-les-donnees)
 - [Bug fix](#bug-fix)
 
 <!-- /TOC -->
@@ -107,11 +114,11 @@ xdebug.remote_autostart = 1
 $autorisation_entrer = "Oui";
 if ($autorisation_entrer == "Oui") // SI on a l'autorisation d'entrer
 {
-    // instructions à exécuter quand on est autorisé à entrer
+    // instructions a executer quand on est autorise a entrer
 }
 elseif ($autorisation_entrer == "Non") // SINON SI on n'a pas l'autorisation d'entrer
 {
-    // instructions à exécuter quand on n'est pas autorisé à entrer
+    // instructions a executer quand on n'est pas autorise a entrer
 }
 else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 {
@@ -152,7 +159,7 @@ switch ($note) // on indique sur quelle variable on travaille
     break;
 
     case 16:
-        echo "Tu te débrouilles tres bien !";
+        echo "Tu te debrouilles tres bien !";
     break;
 
     case 20:
@@ -160,7 +167,7 @@ switch ($note) // on indique sur quelle variable on travaille
     break;
 
     default:
-        echo "Désolé, je n'ai pas de message à afficher pour cette note";
+        echo "Desole, je n'ai pas de message a afficher pour cette note";
 }
 ?>
 ```
@@ -255,7 +262,7 @@ foreach ($arr as &$value) {
     $value = $value * 2;
 }
 // $arr vaut maintenant array(2, 4, 6, 8)
-unset($value); // Détruit la référence sur le dernier élément
+unset($value); // Detruit la reference sur le dernier element
 ?>
 ```
 
@@ -271,14 +278,14 @@ foreach ($arr as &$value) {
 }
 // $arr est maintenant array(2, 4, 6, 8)
 
-// sans un unset($value), $value est toujours une référence au dernier élément: $arr[3]
+// sans un unset($value), $value est toujours une reference au dernier element: $arr[3]
 
 foreach ($arr as $key => $value) {
-    // $arr[3] sera mis à jour avec chaque valeur de $arr...
+    // $arr[3] sera mis a jour avec chaque valeur de $arr...
     echo "{$key} => {$value} ";
     print_r($arr);
 }
-// ...jusqu'à ce que finalement la valeur de deuxieme à derniere soit copiée sur la derniere valeur
+// ...jusqu'a ce que finalement la valeur de deuxieme a derniere soit copiee sur la derniere valeur
 
 // sortie :
 // 0 => 2 Array ( [0] => 2, [1] => 4, [2] => 6, [3] => 2 )
@@ -305,8 +312,8 @@ foreach ($arr as $key => $value) {
 
 ```php
 <?php
-// La fonction array permet de créer un array
-$prenoms = array ('François', 'Michel', 'Nicole', 'Véronique', 'Benoît');
+// La fonction array permet de creer un array
+$prenoms = array ('François', 'Michel', 'Nicole', 'Veronique', 'Benoît');
 
 // Autres facons de faire
 $prenoms[0] = 'François';
@@ -314,9 +321,9 @@ $prenoms[1] = 'Michel';
 $prenoms[2] = 'Nicole';
 
 // Ou alors
-$prenoms[] = 'François'; // Créera $prenoms[0]
-$prenoms[] = 'Michel'; // Créera $prenoms[1]
-$prenoms[] = 'Nicole'; // Créera $prenoms[2]
+$prenoms[] = 'François'; // Creera $prenoms[0]
+$prenoms[] = 'Michel'; // Creera $prenoms[1]
+$prenoms[] = 'Nicole'; // Creera $prenoms[2]
 
 // Affiche le 1er element
 echo $prenom[0];
@@ -327,7 +334,7 @@ echo $prenom[0];
 
 ```php
 <?php
-// On crée notre array $coordonnees
+// On cree notre array $coordonnees
 $coordonnees = array (
     'prenom' => 'François',
     'nom' => 'Dupont',
@@ -381,12 +388,12 @@ $coordonnees = array (
 
 if (array_key_exists('nom', $coordonnees))
 {
-    echo 'La clé "nom" se trouve dans les coordonnées !';
+    echo 'La cle "nom" se trouve dans les coordonnees !';
 }
 
 if (array_key_exists('pays', $coordonnees))
 {
-    echo 'La clé "pays" se trouve dans les coordonnées !';
+    echo 'La cle "pays" se trouve dans les coordonnees !';
 }
 
 // Avec in_array
@@ -437,43 +444,186 @@ echo '"Banane" se trouve en position ' . $position;
 **Syntaxe**
 
 ```php
-<?php 
-include("file.php"); 
+<?php
+include("file.php");
 ?>
 ```
 
 # Transmettez des donnees de page en page
+
 ## Transmettez des donnees avec l'URL
 
-* Une URL represente l'adresse d'une page web (commençant generalement par http://).
-* Lorsqu'on fait un lien vers une page, il est possible d'ajouter des parametres sous la forme `bonjour.php?nom=Dupont&prenom=Jean`, qui seront transmis a la page.
-* La page `bonjour.php`, dans l'exemple precedent, recevra ces parametres dans un array nomme `$_GET`:
-    * `$_GET['nom']`  aura pour valeur « Dupont » ;
-    * `$_GET['prenom']`  aura pour valeur « Jean ».
-* Cette technique est tres pratique pour transmettre des valeurs a une page, mais il faut prendre garde au fait que le visiteur peut les modifier tres facilement. Il ne faut donc pas faire aveuglement confiance a ces informations, et tester prudemment leur valeur avant de les utiliser.
-* La fonction `isset()` permet de verifier si une variable est definie ou non.
-* Le transtypage est une technique qui permet de convertir une variable dans le type de donnee souhaite. Cela permet de s'assurer par exemple qu'une variable est bien un `int` (nombre entier).
+- Une URL represente l'adresse d'une page web (commençant generalement par http://).
+- Lorsqu'on fait un lien vers une page, il est possible d'ajouter des parametres sous la forme `bonjour.php?nom=Dupont&prenom=Jean`, qui seront transmis a la page.
+- La page `bonjour.php`, dans l'exemple precedent, recevra ces parametres dans un array nomme `$_GET`:
+  - `$_GET['nom']` aura pour valeur « Dupont » ;
+  - `$_GET['prenom']` aura pour valeur « Jean ».
+- Cette technique est tres pratique pour transmettre des valeurs a une page, mais il faut prendre garde au fait que le visiteur peut les modifier tres facilement. Il ne faut donc pas faire aveuglement confiance a ces informations, et tester prudemment leur valeur avant de les utiliser.
+- La fonction `isset()` permet de verifier si une variable est definie ou non.
+- Le transtypage est une technique qui permet de convertir une variable dans le type de donnee souhaite. Cela permet de s'assurer par exemple qu'une variable est bien un `int` (nombre entier).
 
 **Remarques**
-* Le `&`  dans le code a ete remplace par `&amp;` dans le lien. Ça n'a rien à voir avec PHP: simplement, en HTML, on demande a ce que les `&` soient ecrits `&amp;` dans le code source. Si vous ne le faites pas, *le code ne passera pas la validation W3C*.
+
+- Le `&` dans le code a ete remplace par `&amp;` dans le lien. Ça n'a rien a voir avec PHP: simplement, en HTML, on demande a ce que les `&` soient ecrits `&amp;` dans le code source. Si vous ne le faites pas, _le code ne passera pas la validation W3C_.
 
 ## Transmettez des donnees avec les formulaires
 
-* Les formulaires sont le moyen le plus pratique pour le visiteur de transmettre des informations a votre site. PHP est capable de recuperer les donnees saisies par vos visiteurs et de les traiter.
-* Les donnees envoyees via un formulaire se retrouvent dans un array `$_POST`.
-* De la meme maniere que pour les URL, il ne faut pas donner sa confiance absolue aux donnees que vous envoie l'utilisateur. Il pourrait tres bien ne pas remplir tous les champs, voire trafiquer le code HTML de la page pour supprimer ou ajouter des champs. Traitez les donnees avec vigilance.
-* Que ce soit pour des donnees issues de l'URL (`$_GET`) ou d'un formulaire (`$_POST`), il faut s'assurer qu'aucun texte qui vous est envoye ne contient du HTML si celui-ci est destine a etre affiche sur une page. Sinon, vous ouvrez une faille appelee XSS qui peut être nefaste pour la securite de votre site.
-* Pour eviter la faille XSS, il suffit d'appliquer la fonction htmlspecialchars sur tous les textes envoyes par vos visiteurs que vous afficherez.
-* Les formulaires permettent d'envoyer des fichiers. On retrouve les informations sur les fichiers envoyes dans un array `$_FILES`. Leur traitement est cependant plus complexe.
+- Les formulaires sont le moyen le plus pratique pour le visiteur de transmettre des informations a votre site. PHP est capable de recuperer les donnees saisies par vos visiteurs et de les traiter.
+- Les donnees envoyees via un formulaire se retrouvent dans un array `$_POST`.
+- De la meme maniere que pour les URL, il ne faut pas donner sa confiance absolue aux donnees que vous envoie l'utilisateur. Il pourrait tres bien ne pas remplir tous les champs, voire trafiquer le code HTML de la page pour supprimer ou ajouter des champs. Traitez les donnees avec vigilance.
+- Que ce soit pour des donnees issues de l'URL (`$_GET`) ou d'un formulaire (`$_POST`), il faut s'assurer qu'aucun texte qui vous est envoye ne contient du HTML si celui-ci est destine a etre affiche sur une page. Sinon, vous ouvrez une faille appelee XSS qui peut être nefaste pour la securite de votre site.
+- Pour eviter la faille XSS, il suffit d'appliquer la fonction htmlspecialchars sur tous les textes envoyes par vos visiteurs que vous afficherez.
+- Les formulaires permettent d'envoyer des fichiers. On retrouve les informations sur les fichiers envoyes dans un array `$_FILES`. Leur traitement est cependant plus complexe.
 
-## TP : Page protegee par mot de passe
+## TP1 : Page protegee par mot de passe
+
+[TP1\formulaire.php](TP1\formulaire.php)
+[TP1\secret.php](TP1\secret.php)
+
+## Variables superglobales
+
+- Les variables superglobales sont des variables automatiquement creees par PHP. Elles se presentent sous la forme d'arrays contenant differents types d'informations.
+- Dans les chapitres precedents, nous avons decouvert deux superglobales essentielles :`$_GET` (qui contient les donnees issues de l'URL) et `$_POST` (qui contient les donnees issues d'un formulaire).
+
+**Exemple**
+
+```php
+<pre>
+<?php
+print_r($_SERVER);
+?>
+</pre>
+```
+
+## Session & Cookies
+
+- Une session permet de stocker des informations pendant la duree d'une visite
+- Un cookie permet de stocker des informations sur l'ordinateur de vos visiteurs pendant plusieurs mois.
+- Les variables superglobales sont des variables automatiquement creees par PHP. Elles se presentent sous la forme d'arrays contenant differents types d'informations.
+- Dans les chapitres precedents, nous avons decouvert deux superglobales essentielles : `$_GET` (qui contient les donnees issues de l'URL) et `$_POST` (qui contient les donnees issues d'un formulaire).
+- La superglobale `$_SESSION` permet de stocker des informations qui seront automatiquement transmises de page en page pendant toute la duree de visite d'un internaute sur votre site. Il faut au prealable activer les sessions en appelant la fonction `session_start()`.
+- La superglobale `$_COOKIE` represente le contenu de tous les cookies stockes par votre site sur l'ordinateur du visiteur. Les cookies sont de petits fichiers que l'on peut ecrire sur la machine du visiteur pour retenir par exemple son nom. On cree un cookie avec la fonction `setcookie()`.
+
+**Exemple SESSION**
+
+```php
+// session id
+session_start();
+$_SESSION['nom'] = 'ruffin';
+$_SESSION['prenom'] = 'Jean-Yves';
+print_r(session_id());
+// return l'id de la session
+print_r($_SESSION);
+    /*return
+        [nom] => ruffin
+        [prenom] => Jean-Yves */
+
+session_destroy();
+```
+
+
+**Exemple COOKIE**
+
+```php
+<?php
+setcookie('pseudo', 'Dupont', time() + 365 * 24 * 3600, null, null, false, true);
+?>
+```
+> **Il faut appeler `session_start()` et `setcookie` sur chacune de vos pages AVANT d'ecrire le moindre code HTML (avant meme la balise `<!DOCTYPE>`). Si vous oubliez de lancer `session_start()` , vous ne pourrez pas acceder aux variables superglobales `$_SESSION`.**
+
+## Lisez et ecrivez dans un fichier
+
+* PHP permet d'enregistrer des informations dans des fichiers sur le serveur.
+* Il faut au prealable s'assurer que les fichiers autorisent PHP a les modifier. Pour cela, il faut changer les permissions du fichier (on parle de `chmod`) a l'aide d'un logiciel FTP comme FileZilla. Donnez la permission `777` au fichier pour permettre a PHP de travailler dessus.
+* La fonction `fopen` permet d'ouvrir le fichier, `fgets` de le lire ligne par ligne et `fputs` d'y ecrire une ligne.
+* A moins de stocker des donnees tres simples, l'utilisation des fichiers n'est pas vraiment la technique la plus adaptee pour enregistrer des informations. Il est vivement recommande de faire appel a une base de donnees.
+
+```php
+<?php
+// on ouvre le fichier
+$monFichier = fopen('compteur.txt', 'r+');
+// Lecture 1er ligne du fichier
+$ligne = fgets($monFichier);
+echo ($ligne);
+// ecrire dans le fichier
+fputs($monFichier, 'je viens d\'editer mon text a la fin du fichier');
+// remise à zero du curseur
+fseek($monFichier, 0);
+// on ecrit en debut de fichier
+fputs($monFichier, 'Enfin on est pas mal ');
+// on ferme le fichier
+fclose($monFichier);
+echo ('contenu du fichier ' . $monFichier)
+?>
+```
+
+# Base de donnees
+## Qu'est ce qu'une base de donnees
+
+* Une base de donnees est un outil qui stocke vos donnees de maniere organisee et vous permet de les retrouver facilement par la suite.
+* On communique avec MySQL grace au langage SQL. Ce langage est commun a tous les systemes de gestion de base de donnees (avec quelques petites differences neanmoins pour certaines fonctionnalites plus avancees).
+* PHP fait l'intermediaire entre vous et MySQL.
+* Une base de donnees contient plusieurs tables.
+* Chaque table est un tableau ou les colonnes sont appelees « champs » et les lignes « entrees ».
+
+## phpMyAdmin
+
+* phpMyAdmin est un outil qui nous permet de visualiser rapidement l'etat de notre base de donnees et de la modifier, sans avoir à ecrire de requêtes SQL.
+* On cree generalement un champ nomme `id` qui sert a numeroter les entrees d'une table. Ce champ doit avoir un `index PRIMARY` (on dit qu'on cree une cle primaire) et l'`option AUTO_INCREMENT` qui permet de laisser MySQL gerer la numerotation.
+* MySQL gere differents types de donnees pour ses champs, à la maniere de PHP. On trouve des types adaptes au stockage de nombres, de textes, de dates, etc.
+* phpMyAdmin possede un outil d'importation et d'exportation des tables qui nous permettra notamment d'envoyer notre base de donnees sur Internet lorsque nous mettrons notre site en ligne.
+
+**Exemple**
+```sql
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `contenu` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `news` (`id`, `titre`, `contenu`) VALUES
+(1, 'Ma premiere visite', 'Vous etets bien ici'),
+(2, 'Ma secondevisite', 'Vous etets encore bien ici');
+
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `news`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+```
+![phpmyadmin](ressources\phpmyadmin.bmp)
+
+## Lire les donnees
+
+* Pour dialoguer avec MySQL depuis PHP, on fait appel a l'extension `PDO` de PHP.
+* Avant de dialoguer avec MySQL, il faut s'y connecter. On a besoin de l'adresse IP de la machine où se trouve MySQL, du nom de la base de donnees ainsi que d'un login et d'un mot de passe.
+* Les requêtes SQL commençant par `SELECT` permettent de recuperer des informations dans une base de donnees.
+* Il faut faire une boucle en PHP pour recuperer ligne par ligne les donnees renvoyees par MySQL.
+* Le langage SQL propose de nombreux outils pour preciser nos requêtes, a l'aide notamment des mots-cles `WHERE`(filtre), `ORDER BY`(tri) et `LIMIT` (limitation du nombre de resultats).
+* Pour construire une requête en fonction de la valeur d'une variable, on passe par un systeme de requête preparee qui permet d'eviter les dangereuses failles d'injection SQL.
+
+
+
+
+
+
+
 
 
 # Bug fix
 
->**Bug fix Transmettez des donnees**
-* si `$_FILES['monfichier']['error']` return 1 cela signifie que la taille du fichier telecharge excede la valeur de upload_max_filesize, configuree dans le php.ini.
-* si doute sur l'extension du fichier envoye. Interroger `$infosFichier = pathinfo($_FILES['monfichier']['name'])$extension_upload = $infosFichier['extension'];` Exemple MP4 c'est en realite mp4.
-* si vous avez des erreurs lors de l'execution de xdebug telquelle `Notice: Undefined index:` cela signifie qu'il manque une verification isset de vos parametres transmis.
-* si erreur `Warning: move_uploaded_file(file): failed to open stream` verifier que le repertoire cible existe sur le serveur a l'aide de `echo realpath($sTempFileName)` + Check [Bug fix php.net](https://www.php.net/manual/en/function.move-uploaded-file) + verifier votre configuration de fichier php.ini
-* Pour charger votre video sur une page, une erreur peux survenir `web Not allowed to load local resource`.
+> **Bug fix Transmettez des donnees**
+
+- si `$_FILES['monfichier']['error']` return 1 cela signifie que la taille du fichier telecharge excede la valeur de upload_max_filesize, configuree dans le php.ini.
+- si doute sur l'extension du fichier envoye. Interroger `$infosFichier = pathinfo($_FILES['monfichier']['name'])$extension_upload = $infosFichier['extension'];` Exemple MP4 c'est en realite mp4.
+- si vous avez des erreurs lors de l'execution de xdebug telquelle `Notice: Undefined index:` cela signifie qu'il manque une verification isset de vos parametres transmis.
+- si erreur `Warning: move_uploaded_file(file): failed to open stream` verifier que le repertoire cible existe sur le serveur a l'aide de `echo realpath($sTempFileName)` + Check [Bug fix php.net](https://www.php.net/manual/en/function.move-uploaded-file) + verifier votre configuration de fichier php.ini
+- Pour charger votre video sur une page, une erreur peux survenir `web Not allowed to load local resource`.
+- Probleme serceur distant:
+Au prealable installer a l'aide de google plateform , par exemple , un serveur distant. Installer Filezila server [Solution rtapide avec filezilla server](https://www.youtube.com/watch?v=IDupV3NBz6g&ab_channel=BTNHD)

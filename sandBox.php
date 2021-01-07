@@ -1,3 +1,7 @@
+<?php
+session_start();
+setcookie('pseudo', 'Dupont', time() + 365 * 24 * 3600, null, null, false, true);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -12,7 +16,7 @@
     <p> Cette ligne a été écrite entièrement en HTML.<br />
         <?php
 
-        echo $_SERVER;
+       
         echo "<br/>";
         echo gettype($_SERVER);
         foreach ($_SERVER as $value) {
@@ -170,6 +174,24 @@
 
 
         ?>
+    <pre>
+<?php
+print_r($_GET);
+print_r($_POST);
+print_r($_COOKIE);
+print_r($_SERVER);
+print_r($_ENV);
+print_r($_FILES);
+$_SESSION['nom'] = 'ruffin';
+$_SESSION['prenom'] = 'Jean-Yves';
+print_r(session_id());
+print_r($_SESSION);
+// session_destroy();
+?>
+</pre>
+    </p>
+    <p>
+        <a href="sandboxTarget.php">clik here to sandBoxTargetPage pour test les valeur de la session</a>
     </p>
 
 </body>

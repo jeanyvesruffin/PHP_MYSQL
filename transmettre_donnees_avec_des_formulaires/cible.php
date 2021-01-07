@@ -115,7 +115,7 @@
     <p>Fichier uploader</p>
     <?php
     if (isset($tempFileLoader)) {
-        echo '<!--<video controls width="500">
+        echo '<video controls width="500">
             
         <source src="'.$tempFileLoader.'"
         type="video/mp4">
@@ -126,7 +126,7 @@ Sorry, your browser doesn\'t support embedded videos.
             
             
             
-            </video>-->';
+            </video>';
     }
     ?>
 </body>
