@@ -14,21 +14,53 @@
 - [Les bases de PHP](#les-bases-de-php)
     - [Les variables](#les-variables)
     - [Les conditions](#les-conditions)
+        - [Exemple else elseif else](#exemple-else-elseif-else)
+        - [Exemple switch case](#exemple-switch-case)
+        - [Exemple ternaire](#exemple-ternaire)
     - [Les boucles](#les-boucles)
+        - [Exemple boucle while](#exemple-boucle-while)
+        - [Exemple boucle do-while](#exemple-boucle-do-while)
+        - [Exemple boucle for](#exemple-boucle-for)
+        - [Exemple boucle foreach](#exemple-boucle-foreach)
     - [Les tableaux](#les-tableaux)
+        - [Exemple tableau numerote](#exemple-tableau-numerote)
+        - [Exemple de tableaux associatifs](#exemple-de-tableaux-associatifs)
+        - [Exemple de recherche d'element dans un tableau](#exemple-de-recherche-delement-dans-un-tableau)
     - [Les fonctions](#les-fonctions)
+        - [Exemples de fonction native a PHP](#exemples-de-fonction-native-a-php)
     - [Inclure des portions de page](#inclure-des-portions-de-page)
+        - [Syntaxe inclure](#syntaxe-inclure)
 - [Transmettez des donnees de page en page](#transmettez-des-donnees-de-page-en-page)
     - [Transmettez des donnees avec l'URL](#transmettez-des-donnees-avec-lurl)
     - [Transmettez des donnees avec les formulaires](#transmettez-des-donnees-avec-les-formulaires)
     - [TP1 : Page protegee par mot de passe](#tp1--page-protegee-par-mot-de-passe)
     - [Variables superglobales](#variables-superglobales)
+        - [Exemple variable superglobal](#exemple-variable-superglobal)
     - [Session & Cookies](#session--cookies)
+        - [xemple SESSION](#xemple-session)
+        - [Exemple COOKIE](#exemple-cookie)
     - [Lisez et ecrivez dans un fichier](#lisez-et-ecrivez-dans-un-fichier)
 - [Base de donnees](#base-de-donnees)
     - [Qu'est ce qu'une base de donnees](#quest-ce-quune-base-de-donnees)
     - [phpMyAdmin](#phpmyadmin)
+        - [Exemple script creation de base de donnees mysql](#exemple-script-creation-de-base-de-donnees-mysql)
     - [Lire les donnees](#lire-les-donnees)
+        - [Methodologie pour se connecter et lire Avec log trace d'erreur  array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)](#methodologie-pour-se-connecter-et-lire-avec-log-trace-derreur--arraypdoattr_errmodepdoerrmode_exception)
+        - [Methologie requete prepare plus efficace avec des marqueurs nominatifs](#methologie-requete-prepare-plus-efficace-avec-des-marqueurs-nominatifs)
+    - [Ecrire les donnees](#ecrire-les-donnees)
+        - [Exemple d'ecriture de donnees](#exemple-decriture-de-donnees)
+        - [Exemple d'ecriture de donnees grace a une requete preparee](#exemple-decriture-de-donnees-grace-a-une-requete-preparee)
+        - [Exemple d'update de donnees](#exemple-dupdate-de-donnees)
+        - [Exemple d'update de donnees avec requete prepare](#exemple-dupdate-de-donnees-avec-requete-prepare)
+        - [Exemple Delete](#exemple-delete)
+    - [Gestion des erreurs](#gestion-des-erreurs)
+    - [Les fonctions SQL](#les-fonctions-sql)
+        - [Exemple fonction scalaire UPPER, LOWER, LENGTH, ROUND](#exemple-fonction-scalaire-upper-lower-length-round)
+        - [Exemple fonction d'agregat AVG, SUM, MAX, MIN, COUNT](#exemple-fonction-dagregat-avg-sum-max-min-count)
+        - [Exemple de groupement des donneees GROUP BY, HAVING](#exemple-de-groupement-des-donneees-group-by-having)
+    - [Les dates en SQL](#les-dates-en-sql)
+        - [Exemple date](#exemple-date)
+        - [Exemple fonction date:  NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR()  , MINUTE()  , SECOND(), DATE_FORMAT(), DATE_ADD()  et DATE_SUB()](#exemple-fonction-date--now-curdate-curtime-day-month-year-hour---minute---second-date_format-date_add--et-date_sub)
 - [Bug fix](#bug-fix)
 
 <!-- /TOC -->
@@ -51,7 +83,7 @@
   - Apache, le serveur web ;
   - PHP, le programme qui permet au serveur web d'executer des pages PHP ;
   - MySQL, le logiciel de gestion de bases de donnees.
-- Bien qu'il soit possible d'installer ces outils separement, il est plus simple pour nous d'installer un paquetage tout prêt : MAMP sous Windows et Mac OS X, ou XAMPP sous Linux.
+- Bien qu'il soit possible d'installer ces outils separement, il est plus simple pour nous d'installer un paquetage tout pret : MAMP sous Windows et Mac OS X, ou XAMPP sous Linux.
 - Il est conseille d'utiliser un editeur de texte qui colore le code source, comme Sublime Text ou Atom, pour programmer convenablement en PHP.
   Pour les personnes plus experimentees qui travaillent sur de gros projets, je recommande PHPStorm ou Visual Studio Code.
 
@@ -71,12 +103,14 @@ _Mode operatoire installation xDebug_
 7. Ajouter au fichier php.init les lignes suivantes :
 
 ```php.ini
-[XDebug]
-xdebug.remote_enable = 1
-xdebug.remote_autostart = 1
+[xdebug]
+zend_extension = C:\MAMP\bin\php\php7.4.1\ext\php_xdebug-3.0.1-7.4-vc15.dll
+xdebug.mode = debug
+xdebug.start_with_request = yes
+xdebug.client_port = 9000
 ```
 
-> Bug fix There is already a debug configuration "Listen for XDebug" running. ???????????
+**Attention suivant la version de xDebug les parametres sont differents**
 
 ## Ecrivez votre premier script
 
@@ -97,7 +131,7 @@ xdebug.remote_autostart = 1
 - Une variable est une petite information qui reste stockee en memoire le temps de la generation de la page PHP. Elle a un nom et une valeur.
 - Il existe plusieurs types de variables qui permettent de stocker differents types d'informations : du texte (string), des nombres entiers (int), des nombres decimaux (float), des booleens pour stocker vrai ou faux (bool), etc.
 - En PHP, un nom de variable commence par le symbole dollar : `$age` par exemple.
-- La valeur d'une variable peut être affichee avec l'instruction echo.
+- La valeur d'une variable peut etre affichee avec l'instruction echo.
 - Il est possible de faire des calculs mathematiques entre plusieurs variables : addition, soustraction, multiplication…
 
 > **La concatenation avec les simple guillemets est plus rapide que les double .Il faut ajouter un . entre chaque terme. Si besoin d'echapper un caractere il faut utiliser l'antislash \ .**
@@ -107,7 +141,7 @@ xdebug.remote_autostart = 1
 - Les conditions permettent a PHP de prendre des decisions en fonction de la valeur des variables.
 - La forme de condition la plus courante est if ... elseif ... else qui signifie « si »… « sinon si »… « sinon ».
 
-**Exemple else elseif else**
+### Exemple else elseif else
 
 ```php
 <?php
@@ -128,9 +162,9 @@ else // SINON (la variable ne contient ni Oui ni Non, on ne peut pas agir)
 ```
 
 - On peut combiner des conditions avec les mots-cles AND (« et ») et OR (« ou »).
-- Si une condition comporte de nombreux elseif, il peut être plus pratique d'utiliser switch, une autre forme de condition.
+- Si une condition comporte de nombreux elseif, il peut etre plus pratique d'utiliser switch, une autre forme de condition.
 
-**Exemple switch case**
+### Exemple switch case
 
 ```php
 <?php
@@ -174,7 +208,7 @@ switch ($note) // on indique sur quelle variable on travaille
 
 - Les ternaires sont des conditions condensees qui font un test sur une variable, et en fonction des resultats de ce test donnent une valeur a une autre variable. Elles sont cependant plus rarement utilisees.
 
-**Exemple ternaire**
+### Exemple ternaire
 
 ```php
 <?php
@@ -188,11 +222,11 @@ $majeur = ($age >= 18) ? true : false;
 
 - Les boucles demandent a PHP de repeter des instructions plusieurs fois.
 - Les deux principaux types de boucles sont :
-  - while : : a utiliser de preference lorsqu'on ne sait pas par avance combien de fois la boucle doit être repetee;
+  - while : : a utiliser de preference lorsqu'on ne sait pas par avance combien de fois la boucle doit etre repetee;
   - for : a utiliser lorsqu'on veut repeter des instructions un nombre precis de fois.
 - L'incrementation est une technique qui consiste a ajouter 1 a la valeur d'une variable. La decrementation retire au contraire 1 a cette variable. On trouve souvent des incrementations au sein de boucles for.
 
-**Exemple boucle while**
+### Exemple boucle while
 
 ```php
 <?php
@@ -206,7 +240,7 @@ while ($nombre_de_lignes <= 100)
 ?>
 ```
 
-**Exemple boucle do-while**
+### Exemple boucle do-while
 
 ```php
 <?php
@@ -217,7 +251,7 @@ do {
 ?>
 ```
 
-**Exemple boucle for**
+### Exemple boucle for
 
 ```php
 <?php
@@ -253,7 +287,7 @@ for ($i = 1, $j = 0; $i <= 10; $j += $i, print $i, $i++);
 ?>
 ```
 
-**Exemple boucle foreach**
+### Exemple boucle foreach
 
 ```php
 <?php
@@ -308,7 +342,7 @@ foreach ($arr as $key => $value) {
   - in_array : pour verifier si une valeur existe dans l'array ;
   - array_search : pour recuperer la cle d'une valeur dans l'array.
 
-**Exemple tableau numerote**
+### Exemple tableau numerote
 
 ```php
 <?php
@@ -330,7 +364,7 @@ echo $prenom[0];
 ?>
 ```
 
-**Exemple de tableaux associatifs**
+### Exemple de tableaux associatifs
 
 ```php
 <?php
@@ -375,7 +409,7 @@ echo '</pre>';
 ?>
 ```
 
-**Exemple de recherche d'element dans un tableau**
+### Exemple de recherche d'element dans un tableau
 
 ```php
 <?php
@@ -427,7 +461,7 @@ echo '"Banane" se trouve en position ' . $position;
 - PHP propose des centaines et des centaines de fonctions pretes a l'emploi pour tous types de taches : envoyer un e-mail, recuperer l'heure, crypter des mots de passe, etc.
 - Si PHP ne propose pas la fonction dont on a besoin, il est possible de la creer avec le mot-cle function.
 
-**Exemples de fonction native a PHP**
+### Exemples de fonction native a PHP
 
 - strlen : longueur d'une chaine
 - str_replace : rechercher et remplacer
@@ -441,7 +475,7 @@ echo '"Banane" se trouve en position ' . $position;
 - L'instruction include sera remplacee par le contenu de la page demandee.
 - Cette technique, tres simple a mettre en place, permet par exemple de placer les menus de son site dans un fichier menus.php que l'on inclura dans toutes les pages. Cela permet de centraliser le code des menus, alors qu'on etait auparavant obliges de le copier dans chaque page sur nos sites statiques en HTML et CSS !
 
-**Syntaxe**
+### Syntaxe inclure
 
 ```php
 <?php
@@ -471,7 +505,7 @@ include("file.php");
 - Les formulaires sont le moyen le plus pratique pour le visiteur de transmettre des informations a votre site. PHP est capable de recuperer les donnees saisies par vos visiteurs et de les traiter.
 - Les donnees envoyees via un formulaire se retrouvent dans un array `$_POST`.
 - De la meme maniere que pour les URL, il ne faut pas donner sa confiance absolue aux donnees que vous envoie l'utilisateur. Il pourrait tres bien ne pas remplir tous les champs, voire trafiquer le code HTML de la page pour supprimer ou ajouter des champs. Traitez les donnees avec vigilance.
-- Que ce soit pour des donnees issues de l'URL (`$_GET`) ou d'un formulaire (`$_POST`), il faut s'assurer qu'aucun texte qui vous est envoye ne contient du HTML si celui-ci est destine a etre affiche sur une page. Sinon, vous ouvrez une faille appelee XSS qui peut être nefaste pour la securite de votre site.
+- Que ce soit pour des donnees issues de l'URL (`$_GET`) ou d'un formulaire (`$_POST`), il faut s'assurer qu'aucun texte qui vous est envoye ne contient du HTML si celui-ci est destine a etre affiche sur une page. Sinon, vous ouvrez une faille appelee XSS qui peut etre nefaste pour la securite de votre site.
 - Pour eviter la faille XSS, il suffit d'appliquer la fonction htmlspecialchars sur tous les textes envoyes par vos visiteurs que vous afficherez.
 - Les formulaires permettent d'envoyer des fichiers. On retrouve les informations sur les fichiers envoyes dans un array `$_FILES`. Leur traitement est cependant plus complexe.
 
@@ -485,7 +519,7 @@ include("file.php");
 - Les variables superglobales sont des variables automatiquement creees par PHP. Elles se presentent sous la forme d'arrays contenant differents types d'informations.
 - Dans les chapitres precedents, nous avons decouvert deux superglobales essentielles :`$_GET` (qui contient les donnees issues de l'URL) et `$_POST` (qui contient les donnees issues d'un formulaire).
 
-**Exemple**
+### Exemple variable superglobal
 
 ```php
 <pre>
@@ -504,7 +538,7 @@ print_r($_SERVER);
 - La superglobale `$_SESSION` permet de stocker des informations qui seront automatiquement transmises de page en page pendant toute la duree de visite d'un internaute sur votre site. Il faut au prealable activer les sessions en appelant la fonction `session_start()`.
 - La superglobale `$_COOKIE` represente le contenu de tous les cookies stockes par votre site sur l'ordinateur du visiteur. Les cookies sont de petits fichiers que l'on peut ecrire sur la machine du visiteur pour retenir par exemple son nom. On cree un cookie avec la fonction `setcookie()`.
 
-**Exemple SESSION**
+### xemple SESSION
 
 ```php
 // session id
@@ -521,22 +555,22 @@ print_r($_SESSION);
 session_destroy();
 ```
 
-
-**Exemple COOKIE**
+### Exemple COOKIE
 
 ```php
 <?php
 setcookie('pseudo', 'Dupont', time() + 365 * 24 * 3600, null, null, false, true);
 ?>
 ```
+
 > **Il faut appeler `session_start()` et `setcookie` sur chacune de vos pages AVANT d'ecrire le moindre code HTML (avant meme la balise `<!DOCTYPE>`). Si vous oubliez de lancer `session_start()` , vous ne pourrez pas acceder aux variables superglobales `$_SESSION`.**
 
 ## Lisez et ecrivez dans un fichier
 
-* PHP permet d'enregistrer des informations dans des fichiers sur le serveur.
-* Il faut au prealable s'assurer que les fichiers autorisent PHP a les modifier. Pour cela, il faut changer les permissions du fichier (on parle de `chmod`) a l'aide d'un logiciel FTP comme FileZilla. Donnez la permission `777` au fichier pour permettre a PHP de travailler dessus.
-* La fonction `fopen` permet d'ouvrir le fichier, `fgets` de le lire ligne par ligne et `fputs` d'y ecrire une ligne.
-* A moins de stocker des donnees tres simples, l'utilisation des fichiers n'est pas vraiment la technique la plus adaptee pour enregistrer des informations. Il est vivement recommande de faire appel a une base de donnees.
+- PHP permet d'enregistrer des informations dans des fichiers sur le serveur.
+- Il faut au prealable s'assurer que les fichiers autorisent PHP a les modifier. Pour cela, il faut changer les permissions du fichier (on parle de `chmod`) a l'aide d'un logiciel FTP comme FileZilla. Donnez la permission `777` au fichier pour permettre a PHP de travailler dessus.
+- La fonction `fopen` permet d'ouvrir le fichier, `fgets` de le lire ligne par ligne et `fputs` d'y ecrire une ligne.
+- A moins de stocker des donnees tres simples, l'utilisation des fichiers n'est pas vraiment la technique la plus adaptee pour enregistrer des informations. Il est vivement recommande de faire appel a une base de donnees.
 
 ```php
 <?php
@@ -547,7 +581,7 @@ $ligne = fgets($monFichier);
 echo ($ligne);
 // ecrire dans le fichier
 fputs($monFichier, 'je viens d\'editer mon text a la fin du fichier');
-// remise à zero du curseur
+// remise a zero du curseur
 fseek($monFichier, 0);
 // on ecrit en debut de fichier
 fputs($monFichier, 'Enfin on est pas mal ');
@@ -558,22 +592,24 @@ echo ('contenu du fichier ' . $monFichier)
 ```
 
 # Base de donnees
+
 ## Qu'est ce qu'une base de donnees
 
-* Une base de donnees est un outil qui stocke vos donnees de maniere organisee et vous permet de les retrouver facilement par la suite.
-* On communique avec MySQL grace au langage SQL. Ce langage est commun a tous les systemes de gestion de base de donnees (avec quelques petites differences neanmoins pour certaines fonctionnalites plus avancees).
-* PHP fait l'intermediaire entre vous et MySQL.
-* Une base de donnees contient plusieurs tables.
-* Chaque table est un tableau ou les colonnes sont appelees « champs » et les lignes « entrees ».
+- Une base de donnees est un outil qui stocke vos donnees de maniere organisee et vous permet de les retrouver facilement par la suite.
+- On communique avec MySQL grace au langage SQL. Ce langage est commun a tous les systemes de gestion de base de donnees (avec quelques petites differences neanmoins pour certaines fonctionnalites plus avancees).
+- PHP fait l'intermediaire entre vous et MySQL.
+- Une base de donnees contient plusieurs tables.
+- Chaque table est un tableau ou les colonnes sont appelees « champs » et les lignes « entrees ».
 
 ## phpMyAdmin
 
-* phpMyAdmin est un outil qui nous permet de visualiser rapidement l'etat de notre base de donnees et de la modifier, sans avoir à ecrire de requêtes SQL.
-* On cree generalement un champ nomme `id` qui sert a numeroter les entrees d'une table. Ce champ doit avoir un `index PRIMARY` (on dit qu'on cree une cle primaire) et l'`option AUTO_INCREMENT` qui permet de laisser MySQL gerer la numerotation.
-* MySQL gere differents types de donnees pour ses champs, à la maniere de PHP. On trouve des types adaptes au stockage de nombres, de textes, de dates, etc.
-* phpMyAdmin possede un outil d'importation et d'exportation des tables qui nous permettra notamment d'envoyer notre base de donnees sur Internet lorsque nous mettrons notre site en ligne.
+- phpMyAdmin est un outil qui nous permet de visualiser rapidement l'etat de notre base de donnees et de la modifier, sans avoir a ecrire de requetes SQL.
+- On cree generalement un champ nomme `id` qui sert a numeroter les entrees d'une table. Ce champ doit avoir un `index PRIMARY` (on dit qu'on cree une cle primaire) et l'`option AUTO_INCREMENT` qui permet de laisser MySQL gerer la numerotation.
+- MySQL gere differents types de donnees pour ses champs, a la maniere de PHP. On trouve des types adaptes au stockage de nombres, de textes, de dates, etc.
+- phpMyAdmin possede un outil d'importation et d'exportation des tables qui nous permettra notamment d'envoyer notre base de donnees sur Internet lorsque nous mettrons notre site en ligne.
 
-**Exemple**
+### Exemple script creation de base de donnees mysql
+
 ```sql
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -597,21 +633,275 @@ ALTER TABLE `news`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 ```
+
 ![phpmyadmin](ressources\phpmyadmin.bmp)
 
 ## Lire les donnees
 
-* Pour dialoguer avec MySQL depuis PHP, on fait appel a l'extension `PDO` de PHP.
-* Avant de dialoguer avec MySQL, il faut s'y connecter. On a besoin de l'adresse IP de la machine où se trouve MySQL, du nom de la base de donnees ainsi que d'un login et d'un mot de passe.
-* Les requêtes SQL commençant par `SELECT` permettent de recuperer des informations dans une base de donnees.
-* Il faut faire une boucle en PHP pour recuperer ligne par ligne les donnees renvoyees par MySQL.
-* Le langage SQL propose de nombreux outils pour preciser nos requêtes, a l'aide notamment des mots-cles `WHERE`(filtre), `ORDER BY`(tri) et `LIMIT` (limitation du nombre de resultats).
-* Pour construire une requête en fonction de la valeur d'une variable, on passe par un systeme de requête preparee qui permet d'eviter les dangereuses failles d'injection SQL.
+- Pour dialoguer avec MySQL depuis PHP, on fait appel a l'extension `PDO` de PHP.
+- Avant de dialoguer avec MySQL, il faut s'y connecter. On a besoin de l'adresse IP de la machine où se trouve MySQL, du nom de la base de donnees ainsi que d'un login et d'un mot de passe.
+- Les requetes SQL commençant par `SELECT` permettent de recuperer des informations dans une base de donnees.
+- Il faut faire une boucle en PHP pour recuperer ligne par ligne les donnees renvoyees par MySQL.
+- Le langage SQL propose de nombreux outils pour preciser nos requetes, a l'aide notamment des mots-cles `WHERE`(filtre), `ORDER BY`(tri) et `LIMIT` (limitation du nombre de resultats).
+- Pour construire une requete en fonction de la valeur d'une variable, on passe par un systeme de requete preparee qui permet d'eviter les dangereuses failles d'injection SQL.
 
+### Methodologie pour se connecter et lire Avec log trace d'erreur  array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)
 
+- PDO active: Controler dans le fichier php.ini que les parametres display_errors soit a on et pdo_mysql decommente.
+- Creer une connexion a mysql a l'aide de pdo en testant la presence d'erreur.
 
+```php
+<?php
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root',  array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION);
+    echo 'base de donnees chargee';
+} catch (Exception $exception) {
+    die('Erreur ' . $exception->getMessage());
+}
+?>
+```
 
+- Peupler votre base de donnees dez donnees.
+- Faire une requete
 
+```php
+$reponse = $bdd->query('SELECT * FROM jeux_video');
+```
+
+- Recuperer le contenu de la reponse de la requete.
+
+```php
+$donnee = $reponse->fetch();
+```
+
+- Affiche le resultat par exemple dans la page.
+
+```php
+<strong>Jeu</strong> : <?php echo $donnees['nom']; ?><br />
+Le possesseur de ce jeu est : <?php echo $donnees['possesseur']; ?>, et il le vend a <?php echo $donnees['prix']; ?> euros !<br />
+Ce jeu fonctionne sur <?php echo $donnees['console']; ?> et on peut y jouer a <?php echo $donnees['nbre_joueurs_max']; ?> au maximum<br />
+<?php echo $donnees['possesseur']; ?> a laisse ces commentaires sur <?php echo $donnees['nom']; ?> : <em><?php echo $donnees['commentaires']; ?></em>
+```
+
+**Methologie requete prepare**
+_possesseur et prix_max sont transmis en parametre de l'url_
+
+```php
+$req = $bdd->prepare('SELECT nom, prix FROM jeux_video WHERE possesseur = ?  AND prix <= ? ORDER BY prix');
+$req->execute(array($_GET['possesseur'], $_GET['prix_max']));
+
+echo '<ul>';
+while ($donnees = $req->fetch()) {
+    echo '<li>' . $donnees['nom'] . ' (' . $donnees['prix'] . ' EUR)</li>';
+}
+echo '</ul>';
+
+$req->closeCursor();
+```
+
+### Methologie requete prepare plus efficace avec des marqueurs nominatifs
+
+```php
+$reqMarqueurNominatif = $bdd->prepare('SELECT nom, prix FROM jeux_video WHERE possesseur = :possesseur  AND prix <= :prixmax');
+$reqMarqueurNominatif->execute(array('possesseur' => $_GET['possesseur'], 'prixmax' => $_GET['prix_max']));
+
+echo '<ul>';
+while ($donnees = $reqMarqueurNominatif->fetch()) {
+    echo '<li>' . $donnees['nom'] . ' (' . $donnees['prix'] . ' EUR)</li>';
+}
+echo '</ul>';
+```
+
+## Ecrire les donnees
+
+- On utilise differents mots-cles en fonction du type de modification que l'on souhaite effectuer :
+  - `INSERT INTO` : ajout d'une entree ;
+  - `UPDATE` : modification d'une ou plusieurs entrees ;
+  - `DELETE` : suppression d'une ou plusieurs entrees.
+- Comme pour la selection de donnees, on utilise les requetes preparees pour personnaliser nos requetes en fonction de variables.
+- Lorsqu'on utilise `UPDATE` ou `DELETE`, il faut penser a filtrer avec un `WHERE`, sinon toute la table sera affectee par l'operation !
+
+### Exemple d'ecriture de donnees
+
+```php
+<?php
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root');
+} catch (Exception $e) {
+    die('Erreur d\'ecriture') . $e->getMessage();
+}
+$bdd->exec('INSERT INTO jeux_video(nom,possesseur,console,prix,nbre_joueurs_max, commentaires) VALUES (\'Battlefield 1942\', \'Patrick\', \'PC\', 45, 50, \'2nde guerre mondiale\')');
+?>
+```
+
+### Exemple d'ecriture de donnees grace a une requete preparee
+
+```php
+  <?php
+    $nom = $_POST['nom'];
+    $possesseur = $_POST['possesseur'];
+    $console = $_POST['console'];
+    $nbre_joueurs_max = $_POST['nbre_joueurs_max'];
+    $commentaires = $_POST['commentaires'];
+    $prix = $_POST['prix'];
+    try {
+        $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+        echo 'Connexion a la base reussite';
+    } catch (Exception $e) {
+        die('Erreur d\'ecriture') . $e->getMessage();
+    }
+    $req = $bdd->prepare('INSERT INTO jeux_video(nom, possesseur, console, prix, nbre_joueurs_max, commentaires) VALUES(:nom, :possesseur, :console, :prix, :nbre_joueurs_max, :commentaires)');
+    $req->execute(array(
+        'nom' => $nom,
+        'possesseur' => $possesseur,
+        'console' => $console,
+        'prix' => $prix,
+        'nbre_joueurs_max' => $nbre_joueurs_max,
+        'commentaires' => $commentaires
+    ));
+    echo 'Le jeu a bien ete ajoute !';
+    ?>
+```
+### Exemple d'update de donnees
+```php
+<?php
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    echo 'Connexion a la base reussite';
+} catch (Exception $e) {
+    die('Erreur d\'ecriture') . $e->getMessage();
+}
+$nb_modifs = $bdd->exec('UPDATE jeux_video SET possesseur = \'Florent\' WHERE possesseur = \'Michel\'');
+echo $nb_modifs . ' entrees ont ete modifiees !';
+
+?>
+```
+
+### Exemple d'update de donnees avec requete prepare
+```php
+
+<?php
+$nvprix=$_POST['nvprix'];
+$nv_nb_joueurs=$_POST['nv_nb_joueurs'];
+$nom_jeu=$_POST['nom_jeu'];
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    echo 'Connexion a la base reussite';
+} catch (Exception $e) {
+    die('Erreur d\'ecriture') . $e->getMessage();
+}
+
+$req = $bdd->prepare('UPDATE jeux_video SET prix = :nvprix, nbre_joueurs_max = :nv_nb_joueurs WHERE nom = :nom_jeu');
+$req->execute(array(
+    'nvprix' => $nvprix,
+    'nv_nb_joueurs' => $nv_nb_joueurs,
+    'nom_jeu' => $nom_jeu
+));
+?>
+
+```
+### Exemple Delete
+```php
+<?php
+$nom_jeu=$_POST['nom_jeu'];
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    echo 'Connexion a la base reussite';
+} catch (Exception $e) {
+    die('Erreur d\'ecriture') . $e->getMessage();
+}
+
+$req = $bdd->prepare('DELETE  FROM jeux_video WHERE nom=:nom_jeu');
+$req->execute(array(
+    'nom_jeu' => $nom_jeu
+));
+
+print_r($_POST);
+?>
+```
+
+## Gestion des erreurs
+
+PHP indique si une erreur avec MySQL est intervenue.
+```php
+<?php
+$reponse = $bdd->query('SELECT nom FROM jeux_video') or die(print_r($bdd->errorInfo()));
+?>
+```
+
+## Les fonctions SQL
+
+* MySQL permet d'executer certaines fonctions lui-meme, sans avoir a passer par PHP. Ces fonctions modifient les donnees renvoyees.
+* Il existe deux types de fonctions :
+    * les fonctions scalaires : elles agissent sur chaque entree recuperee. Elles permettent par exemple de convertir tout le contenu d'un champ en majuscules ou d'arrondir chacune des valeurs ;
+    * les fonctions d'agregat : elles effectuent des calculs sur plusieurs entrees pour retourner une et une seule valeur. Par exemple : calcul de la moyenne, somme des valeurs, comptage du nombre d'entrees…
+* On peut donner un autre nom aux champs modifies par les fonctions, en creant des alias a l'aide du mot-cle `AS`.
+* Lorsqu'on utilise une fonction d'agregat, il est possible de regrouper des donnees avec `GROUP BY`.
+* Apres un groupement de donnees, on peut filtrer le resultat avec `HAVING`. Il ne faut pas le confondre avec WHERE qui filtre avant le groupement des donnees.
+
+### Exemple fonction scalaire UPPER, LOWER, LENGTH, ROUND
+
+```sql
+-- convertir en majuscules
+SELECT UPPER(nom) AS nom_maj FROM jeux_video
+-- convertir en minuscules
+SELECT LOWER(nom) AS nom_min FROM jeux_video
+-- compter le nombre de caractères
+SELECT LENGTH(nom) AS longueur_nom FROM jeux_video
+-- arrondir un nombre décimal
+SELECT ROUND(prix, 2) AS prix_arrondi FROM jeux_video
+```
+
+### Exemple fonction d'agregat AVG, SUM, MAX, MIN, COUNT
+```sql
+-- calculer la moyenne
+SELECT AVG(prix) AS prix_moyen FROM jeux_video
+-- additionner les valeurs
+SELECT SUM(prix) AS prix_total FROM jeux_video WHERE possesseur='Patrick'
+-- retourner la valeur maximale
+SELECT MAX(prix) AS prix_max FROM jeux_video
+-- retourner la valeur minimale
+SELECT MIN(prix) AS prix_min FROM jeux_video
+-- compter le nombre d'entrées
+SELECT COUNT(*) AS nbjeux FROM jeux_video
+```
+
+### Exemple de groupement des donneees GROUP BY, HAVING
+
+```sql
+SELECT AVG(prix) AS prix_moyen, console FROM jeux_video WHERE possesseur='Patrick' GROUP BY console HAVING prix_moyen <= 10
+```
+
+## Les dates en SQL
+
+* MySQL propose plusieurs types de champs pour stocker des dates.
+* Les deux types les plus couramment utilises sont :
+    * DATE : stocke une date au format AAAA-MM-JJ ;
+    * DATETIME : stocke une date et une heure au format AAAA-MM-JJ HH:MM:SS.
+* On peut trier et filtrer des champs contenant des dates comme s'il s'agissait de nombres.
+* Il existe de nombreuses fonctions SQL dediees au traitement des dates. La plus connue est NOW()  qui renvoie la date et l'heure actuelles.
+
+### Exemple date
+
+```sql
+SELECT pseudo, message, date FROM minichat WHERE date >= '2010-04-02 00:00:00' AND date <= '2010-04-18 00:00:00'
+```
+
+### Exemple fonction date:  NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR()  , MINUTE()  , SECOND(), DATE_FORMAT(), DATE_ADD()  et DATE_SUB()
+
+```sql
+-- obtenir la date et l'heure actuelles
+INSERT INTO minichat(pseudo, message, date) VALUES('Mateo', 'Message !', NOW())
+-- Notez qu'il existe aussi les fonctions CURDATE()  et CURTIME()  qui retournent respectivement uniquement la date (AAAA-MM-JJ) et l'heure (HH:MM:SS).
+-- extraire le jour, le mois ou l'année DAY(), MONTH(), YEAR()
+SELECT pseudo, message, DAY(date) AS jour FROM minichat
+-- extraire les heures, minutes, secondes HOUR()  , MINUTE()  , SECOND()
+SELECT pseudo, message, HOUR(date) AS heure FROM minichat
+-- formater date DATE_FORMAT
+SELECT pseudo, message, DATE_FORMAT(date, '%d/%m/%Y %Hh%imin%ss') AS date FROM minichat
+-- ajouter ou soustraire des dates DATE_ADD()  et DATE_SUB()
+SELECT pseudo, message, DATE_ADD(date, INTERVAL 2 MONTH) AS date_expiration FROM minichat
+```
 
 
 
@@ -626,4 +916,4 @@ COMMIT;
 - si erreur `Warning: move_uploaded_file(file): failed to open stream` verifier que le repertoire cible existe sur le serveur a l'aide de `echo realpath($sTempFileName)` + Check [Bug fix php.net](https://www.php.net/manual/en/function.move-uploaded-file) + verifier votre configuration de fichier php.ini
 - Pour charger votre video sur une page, une erreur peux survenir `web Not allowed to load local resource`.
 - Probleme serceur distant:
-Au prealable installer a l'aide de google plateform , par exemple , un serveur distant. Installer Filezila server [Solution rtapide avec filezilla server](https://www.youtube.com/watch?v=IDupV3NBz6g&ab_channel=BTNHD)
+  Au prealable installer a l'aide de google plateform , par exemple , un serveur distant. Installer Filezila server [Solution rtapide avec filezilla server](https://www.youtube.com/watch?v=IDupV3NBz6g&ab_channel=BTNHD)
