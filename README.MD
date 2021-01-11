@@ -2,6 +2,7 @@
 
 **[La bible PHP sur https://www.php.net/manual/fr](https://www.php.net/manual/fr)**
 **[php codeur](https://phpcodeur.net)**
+**[Test REGEX](https://regex101.com/)**
 
 <!-- TOC -->
 
@@ -45,7 +46,7 @@
     - [phpMyAdmin](#phpmyadmin)
         - [Exemple script creation de base de donnees mysql](#exemple-script-creation-de-base-de-donnees-mysql)
     - [Lire les donnees](#lire-les-donnees)
-        - [Methodologie pour se connecter et lire Avec log trace d'erreur  array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)](#methodologie-pour-se-connecter-et-lire-avec-log-trace-derreur--arraypdoattr_errmodepdoerrmode_exception)
+        - [Methodologie pour se connecter et lire Avec log trace d'erreur array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)](#methodologie-pour-se-connecter-et-lire-avec-log-trace-derreur-arraypdoattr_errmodepdoerrmode_exception)
         - [Methologie requete prepare plus efficace avec des marqueurs nominatifs](#methologie-requete-prepare-plus-efficace-avec-des-marqueurs-nominatifs)
     - [Ecrire les donnees](#ecrire-les-donnees)
         - [Exemple d'ecriture de donnees](#exemple-decriture-de-donnees)
@@ -60,8 +61,22 @@
         - [Exemple de groupement des donneees GROUP BY, HAVING](#exemple-de-groupement-des-donneees-group-by-having)
     - [Les dates en SQL](#les-dates-en-sql)
         - [Exemple date](#exemple-date)
-        - [Exemple fonction date:  NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR()  , MINUTE()  , SECOND(), DATE_FORMAT(), DATE_ADD()  et DATE_SUB()](#exemple-fonction-date--now-curdate-curtime-day-month-year-hour---minute---second-date_format-date_add--et-date_sub)
-- [Bug fix](#bug-fix)
+        - [Exemple fonction date: NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR() , MINUTE() , SECOND(), DATE_FORMAT(), DATE_ADD() et DATE_SUB()](#exemple-fonction-date-now-curdate-curtime-day-month-year-hour--minute--second-date_format-date_add-et-date_sub)
+    - [Les jointures entre tables](#les-jointures-entre-tables)
+        - [Exemple jointure interne avec INNER JOIN](#exemple-jointure-interne-avec-inner-join)
+        - [Exemple jointure externe avec LEFT JOIN](#exemple-jointure-externe-avec-left-join)
+        - [Exemple jointure externe avec RIGHT JOIN](#exemple-jointure-externe-avec-right-join)
+- [Creer une image en PHP](#creer-une-image-en-php)
+        - [Le header](#le-header)
+        - [Creation image a partir d'une image vide](#creation-image-a-partir-dune-image-vide)
+        - [Creation image a partir d'une image existante](#creation-image-a-partir-dune-image-existante)
+    - [Les expressions regulieres](#les-expressions-regulieres)
+        - [Exemple regex](#exemple-regex)
+        - [Exemple regex mysql](#exemple-regex-mysql)
+        - [Exemple de capture et remplacement](#exemple-de-capture-et-remplacement)
+        - [Exemple BBCode](#exemple-bbcode)
+        - [Exemple complet BBCode](#exemple-complet-bbcode)
+- [Bug fix et tips](#bug-fix-et-tips)
 
 <!-- /TOC -->
 
@@ -645,7 +660,7 @@ COMMIT;
 - Le langage SQL propose de nombreux outils pour preciser nos requetes, a l'aide notamment des mots-cles `WHERE`(filtre), `ORDER BY`(tri) et `LIMIT` (limitation du nombre de resultats).
 - Pour construire une requete en fonction de la valeur d'une variable, on passe par un systeme de requete preparee qui permet d'eviter les dangereuses failles d'injection SQL.
 
-### Methodologie pour se connecter et lire Avec log trace d'erreur  array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)
+### Methodologie pour se connecter et lire Avec log trace d'erreur array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)
 
 - PDO active: Controler dans le fichier php.ini que les parametres display_errors soit a on et pdo_mysql decommente.
 - Creer une connexion a mysql a l'aide de pdo en testant la presence d'erreur.
@@ -762,7 +777,9 @@ $bdd->exec('INSERT INTO jeux_video(nom,possesseur,console,prix,nbre_joueurs_max,
     echo 'Le jeu a bien ete ajoute !';
     ?>
 ```
+
 ### Exemple d'update de donnees
+
 ```php
 <?php
 try {
@@ -778,6 +795,7 @@ echo $nb_modifs . ' entrees ont ete modifiees !';
 ```
 
 ### Exemple d'update de donnees avec requete prepare
+
 ```php
 
 <?php
@@ -800,7 +818,9 @@ $req->execute(array(
 ?>
 
 ```
+
 ### Exemple Delete
+
 ```php
 <?php
 $nom_jeu=$_POST['nom_jeu'];
@@ -823,6 +843,7 @@ print_r($_POST);
 ## Gestion des erreurs
 
 PHP indique si une erreur avec MySQL est intervenue.
+
 ```php
 <?php
 $reponse = $bdd->query('SELECT nom FROM jeux_video') or die(print_r($bdd->errorInfo()));
@@ -831,13 +852,13 @@ $reponse = $bdd->query('SELECT nom FROM jeux_video') or die(print_r($bdd->errorI
 
 ## Les fonctions SQL
 
-* MySQL permet d'executer certaines fonctions lui-meme, sans avoir a passer par PHP. Ces fonctions modifient les donnees renvoyees.
-* Il existe deux types de fonctions :
-    * les fonctions scalaires : elles agissent sur chaque entree recuperee. Elles permettent par exemple de convertir tout le contenu d'un champ en majuscules ou d'arrondir chacune des valeurs ;
-    * les fonctions d'agregat : elles effectuent des calculs sur plusieurs entrees pour retourner une et une seule valeur. Par exemple : calcul de la moyenne, somme des valeurs, comptage du nombre d'entrees…
-* On peut donner un autre nom aux champs modifies par les fonctions, en creant des alias a l'aide du mot-cle `AS`.
-* Lorsqu'on utilise une fonction d'agregat, il est possible de regrouper des donnees avec `GROUP BY`.
-* Apres un groupement de donnees, on peut filtrer le resultat avec `HAVING`. Il ne faut pas le confondre avec WHERE qui filtre avant le groupement des donnees.
+- MySQL permet d'executer certaines fonctions lui-meme, sans avoir a passer par PHP. Ces fonctions modifient les donnees renvoyees.
+- Il existe deux types de fonctions :
+  - les fonctions scalaires : elles agissent sur chaque entree recuperee. Elles permettent par exemple de convertir tout le contenu d'un champ en majuscules ou d'arrondir chacune des valeurs ;
+  - les fonctions d'agregat : elles effectuent des calculs sur plusieurs entrees pour retourner une et une seule valeur. Par exemple : calcul de la moyenne, somme des valeurs, comptage du nombre d'entrees…
+- On peut donner un autre nom aux champs modifies par les fonctions, en creant des alias a l'aide du mot-cle `AS`.
+- Lorsqu'on utilise une fonction d'agregat, il est possible de regrouper des donnees avec `GROUP BY`.
+- Apres un groupement de donnees, on peut filtrer le resultat avec `HAVING`. Il ne faut pas le confondre avec WHERE qui filtre avant le groupement des donnees.
 
 ### Exemple fonction scalaire UPPER, LOWER, LENGTH, ROUND
 
@@ -848,11 +869,12 @@ SELECT UPPER(nom) AS nom_maj FROM jeux_video
 SELECT LOWER(nom) AS nom_min FROM jeux_video
 -- compter le nombre de caractères
 SELECT LENGTH(nom) AS longueur_nom FROM jeux_video
--- arrondir un nombre décimal
+-- arrondir un nombre decimal
 SELECT ROUND(prix, 2) AS prix_arrondi FROM jeux_video
 ```
 
 ### Exemple fonction d'agregat AVG, SUM, MAX, MIN, COUNT
+
 ```sql
 -- calculer la moyenne
 SELECT AVG(prix) AS prix_moyen FROM jeux_video
@@ -862,7 +884,7 @@ SELECT SUM(prix) AS prix_total FROM jeux_video WHERE possesseur='Patrick'
 SELECT MAX(prix) AS prix_max FROM jeux_video
 -- retourner la valeur minimale
 SELECT MIN(prix) AS prix_min FROM jeux_video
--- compter le nombre d'entrées
+-- compter le nombre d'entrees
 SELECT COUNT(*) AS nbjeux FROM jeux_video
 ```
 
@@ -874,12 +896,12 @@ SELECT AVG(prix) AS prix_moyen, console FROM jeux_video WHERE possesseur='Patric
 
 ## Les dates en SQL
 
-* MySQL propose plusieurs types de champs pour stocker des dates.
-* Les deux types les plus couramment utilises sont :
-    * DATE : stocke une date au format AAAA-MM-JJ ;
-    * DATETIME : stocke une date et une heure au format AAAA-MM-JJ HH:MM:SS.
-* On peut trier et filtrer des champs contenant des dates comme s'il s'agissait de nombres.
-* Il existe de nombreuses fonctions SQL dediees au traitement des dates. La plus connue est NOW()  qui renvoie la date et l'heure actuelles.
+- MySQL propose plusieurs types de champs pour stocker des dates.
+- Les deux types les plus couramment utilises sont :
+  - DATE : stocke une date au format AAAA-MM-JJ ;
+  - DATETIME : stocke une date et une heure au format AAAA-MM-JJ HH:MM:SS.
+- On peut trier et filtrer des champs contenant des dates comme s'il s'agissait de nombres.
+- Il existe de nombreuses fonctions SQL dediees au traitement des dates. La plus connue est NOW() qui renvoie la date et l'heure actuelles.
 
 ### Exemple date
 
@@ -887,13 +909,13 @@ SELECT AVG(prix) AS prix_moyen, console FROM jeux_video WHERE possesseur='Patric
 SELECT pseudo, message, date FROM minichat WHERE date >= '2010-04-02 00:00:00' AND date <= '2010-04-18 00:00:00'
 ```
 
-### Exemple fonction date:  NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR()  , MINUTE()  , SECOND(), DATE_FORMAT(), DATE_ADD()  et DATE_SUB()
+### Exemple fonction date: NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR() , MINUTE() , SECOND(), DATE_FORMAT(), DATE_ADD() et DATE_SUB()
 
 ```sql
 -- obtenir la date et l'heure actuelles
 INSERT INTO minichat(pseudo, message, date) VALUES('Mateo', 'Message !', NOW())
 -- Notez qu'il existe aussi les fonctions CURDATE()  et CURTIME()  qui retournent respectivement uniquement la date (AAAA-MM-JJ) et l'heure (HH:MM:SS).
--- extraire le jour, le mois ou l'année DAY(), MONTH(), YEAR()
+-- extraire le jour, le mois ou l'annee DAY(), MONTH(), YEAR()
 SELECT pseudo, message, DAY(date) AS jour FROM minichat
 -- extraire les heures, minutes, secondes HOUR()  , MINUTE()  , SECOND()
 SELECT pseudo, message, HOUR(date) AS heure FROM minichat
@@ -903,10 +925,242 @@ SELECT pseudo, message, DATE_FORMAT(date, '%d/%m/%Y %Hh%imin%ss') AS date FROM m
 SELECT pseudo, message, DATE_ADD(date, INTERVAL 2 MONTH) AS date_expiration FROM minichat
 ```
 
+## Les jointures entre tables
+
+- Les bases de donnees permettent d'associer plusieurs tables entre elles.
+- Une table peut contenir les id d'une autre table, ce qui permet de faire la liaison entre les deux. Par exemple, la table des jeux video contient pour chaque jeu l'id de son proprietaire. Le nom et les coordonnees du proprietaire sont alors stockes dans une table a part.
+- Pour rassembler les informations au moment de la requête, on effectue des jointures.
+- On peut faire des jointures avec le mot-cle `WHERE`, mais il est recommande d'utiliser `JOIN` qui offre plus de possibilites et qui est plus adapte.
+- On distingue les jointures internes, qui retournent des donnees uniquement s'il y a une correspondance entre les deux tables, et les jointures externes qui retournent toutes les donnees, même s'il n'y a pas de correspondance.
+
+### Exemple jointure interne avec INNER JOIN
+
+```sql
+SELECT j.nom nom_jeu, p.prenom prenom_proprietaire
+FROM proprietaires p
+INNER JOIN jeux_video j
+ON j.ID_proprietaire = p.ID
+WHERE j.console = 'PC'
+ORDER BY prix DESC
+LIMIT 0, 10
+```
+
+### Exemple jointure externe avec LEFT JOIN
+
+```sql
+SELECT j.nom nom_jeu, p.prenom prenom_proprietaire
+FROM proprietaires p
+LEFT JOIN jeux_video j
+ON j.ID_proprietaire = p.ID
+```
+
+### Exemple jointure externe avec RIGHT JOIN
+
+```sql
+SELECT j.nom nom_jeu, p.prenom prenom_proprietaire
+FROM proprietaires p
+RIGHT JOIN jeux_video j
+ON j.ID_proprietaire = p.ID
+```
+
+# Creer une image en PHP
+
+* PHP permet de faire bien plus que generer des pages web HTML. En utilisant des extensions, comme la bibliotheque GD, on peut par exemple generer des images.
+* Pour qu'une page PHP renvoie une image au lieu d'une page web, il faut modifier l'en-tete HTTP a l'aide de la fonction `header()` qui indiquera alors au navigateur du visiteur l'arrivee d'une image.
+* Il est possible d'enregistrer l'image sur le disque dur si on le souhaite, ce qui evite d'avoir a la generer a chaque fois qu'on appelle la page PHP.
+* On peut creer des images avec GD a partir d'une image vide ou d'une image deja existante.
+* GD propose des fonctions d'ecriture de texte dans une image et de dessin de formes basiques.
+* Des fonctions plus avancees de GD permettent de fusionner des images ou d'en redimensionner.
+
+### Le header
+```php
+<?php
+header ("Content-type: image/png");
+?>
+```
+### Creation image a partir d'une image vide
+```php
+<?php
+header ("Content-type: image/png");
+?>
+```
+### Creation image a partir d'une image existante
+```php
+<?php
+header("Content-type: image/jpeg");
+// chemin de l'image
+$source = "couchersoleil.jpg";
+// lecture de l'image
+$photo = ImageCreateFromJpeg($source);
+// affichage de l'image
+imagejpeg($photo);
+?>
+```
+
+## Les expressions regulieres
+
+* Les expressions regulieres sont des outils de recherche et de remplacement de texte tres avances qui permettent d'effectuer des recherches tres precises, pour verifier par exemple que le texte saisi par l'utilisateur correspond bien a la forme d'une adresse e-mail ou d'un numero de telephone.
+* La fonction `preg_match` verifie si un texte correspond a la forme decrite par une expression reguliere.
+* Une expression reguliere est delimitee par un symbole (par exemple le diese `#`).
+* Les classes de caracteres permettent d'autoriser un grand nombre de symboles (lettres et chiffres) selon un intervalle.
+* Les quantificateurs permettent d'exiger la repetition d'une chaîne de texte un certain nombre de fois.
+* Certains caracteres sont speciaux au sein d'une expression reguliere : on parle de metacaracteres. Si on souhaite les rechercher dans une chaine, il faut les echapper en placant un symbole antislash devant. Par exemple : `\[`.
+* Il existe des classes abregees, c'est-a-dire des classes toutes pretes, comme par exemple `\d` qui revient a ecrire `[0-9]`.
+* La fonction `preg_replace` permet d'effectuer des remplacements dans une chaine de texte.
+* Dans le cas d'un remplacement, les parentheses au sein d'une expression reguliere permettent de capturer une portion de texte pour la reutiliser dans une autre chaine.
 
 
 
-# Bug fix
+
+### Exemple regex
+
+```php
+<?php
+    // recherche mot guitare ou piano
+    if (preg_match("#guitare|piano#i", "J\'aime la piano")) {
+        echo 'Le mot que vous cherchez se trouve dans la chaine #guitare|piano#i dans "J\'aime la piano"';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    // debut de chaine de caratere
+    if (preg_match("#^Bonjour#i", "Bonjour tous le monde!")) {
+        echo 'le regex est Vrai #^Bonjour#i dans Bonjour tous le monde!';
+        echo '<br/>';
+    } else {
+        echo 'faux ';
+    }
+    // Des classes simples
+    if (preg_match("#gr[aoi]s#i", "Berk, c\'est trop gras comme nourriture")) {
+        echo 'le regex est Vrai dans Berk, c\'est trop gras comme nourriture #gr[aoi]s#i dans Berk, c\'est trop gras comme nourriture';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    if (preg_match("#[aeiouy]$#", "Je suis un vrai zéro")) {
+        echo 'le regex est Vrai dans Je suis un vrai zéro se termine bien par #[aeiouy]$# dans Je suis un vrai zéro';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    // Les intervalles de classe
+    if (preg_match("#[a-z]$#", "Je suis un vrai zéro")) {
+        echo 'le regex est Vrai dans Je suis un vrai zéro se termine bien par #[a-z]$# dans Je suis un vrai zéro';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    // Les intervalles de classe a exclure
+    if (preg_match("#[^0-9]$#", "Je suis un vrai zéro")) {
+        echo 'le regex est Vrai dans Je suis un vrai zéro ne commence pas par un chiffre #[^a-z]$# dans Je suis un vrai zéro' ;
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    // Les symboles les plus courants
+    if (preg_match("#bor?is#i", "Bois")) {
+        echo 'le regex est Vrai indique que la lettre est facultative #bor?is#i dans Boris ou bois';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    if (preg_match("#b+#i", "Bois")) {
+        echo 'le regex est Vrai indique que la lettre b est obligatoire #bor?is#i dans Boris ou bois';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    if (preg_match("#b*#i", "ois")) {
+        echo 'le regex est Vrai indique que la lettre b est facultative #bor?is#i dans oris ou ois';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    if (preg_match("#a{3}#i", "Haaa ! pourquoi pas")) {
+        echo 'le regex est Vrai indique que la lettre a est repete 3 fois #a{3}#i aaa ! pourquoi pas';
+        echo '<br/>';
+    } else {
+        echo 'Le mot que vous cherchez ne se trouve pas dans la chaine ';
+    }
+    ?>
+```
+### Exemple regex mysql
+
+```sql 
+SELECT nom FROM visiteurs WHERE ip REGEXP '^84\.254(\.[0-9]{1,3}){2}$'
+-- Cela signifie : Sélectionne tous les noms de la table visiteurs  dont l'IP commence par « 84.254 » et se termine par deux autres nombres de un à trois chiffre(s) (ex. : 84.254.6.177).
+```
+
+### Exemple de capture et remplacement
+```php
+<?php
+$texte = preg_replace('#\[b\](.+)\[/b\]#i', '<strong>$1</strong>', $texte);
+?>
+```
+
+### Exemple BBCode
+```php
+<?php
+$texte= 'Ce texte est [b]important[/b], il faut me [b]comprendre[/b] !';
+$texte2= 'Ce texte est [i]important[/i], il faut me [i]comprendre[/i] !';
+$texte = preg_replace('#\[b\](.+)\[/b\]#isU', '<strong>$1</strong>', $texte);
+$texte2 = preg_replace('#\[i\](.+)\[/i\]#isU', '<em>$1</em>', $texte2);
+echo $texte;
+echo '<br/>';
+echo $texte2;
+?>
+```
+
+### Exemple complet BBCode
+```php
+<?php
+if (isset($_POST['texte']))
+{
+    $texte = stripslashes($_POST['texte']); // On enlève les slashs qui se seraient ajoutés automatiquement
+    $texte = htmlspecialchars($texte); // On rend inoffensives les balises HTML que le visiteur a pu rentrer
+    $texte = nl2br($texte); // On crée des <br /> pour conserver les retours à la ligne
+    
+    // On fait passer notre texte à la moulinette des regex
+    $texte = preg_replace('#\[b\](.+)\[/b\]#isU', '<strong>$1</strong>', $texte);
+    $texte = preg_replace('#\[i\](.+)\[/i\]#isU', '<em>$1</em>', $texte);
+    $texte = preg_replace('#\[color=(red|green|blue|yellow|purple|olive)\](.+)\[/color\]#isU', '<span style="color:$1">$2</span>', $texte);
+    $texte = preg_replace('#http://[a-z0-9._/-]+#i', '<a href="$0">$0</a>', $texte);
+
+    // Et on affiche le résultat. Admirez !
+    echo $texte . '<br /><hr />';
+}
+?>
+
+<p>
+    Bienvenue dans le parser de mon site !<br />
+    Nous avons écrit ce parser ensemble, j'espère que vous saurez apprécier de voir que tout ce que vous avez appris va vous être très utile !
+</p>
+
+<p>Amusez-vous à utiliser du bbCode. Tapez par exemple :</p>
+
+<blockquote style="font-size:0.8em">
+<p>
+    Je suis un grand [b]débutant[/b], et pourtant j'ai [i]tout appris[/i] sur http://www.openclassrooms.com<br />
+    Je vous [b][color=green]recommande[/color][/b] d'aller sur ce site, vous pourrez apprendre à faire ça [i][color=purple]vous aussi[/color][/i] !
+</p>
+</blockquote>
+
+<form method="post">
+<p>
+    <label for="texte">Votre message ?</label><br />
+    <textarea id="texte" name="texte" cols="50" rows="8"></textarea><br />
+    <input type="submit" value="Montre-moi toute la puissance des regex" />
+</p>
+</form>
+```
+
+
+
+
+
+
+
+# Bug fix et tips
 
 > **Bug fix Transmettez des donnees**
 
@@ -915,5 +1169,16 @@ SELECT pseudo, message, DATE_ADD(date, INTERVAL 2 MONTH) AS date_expiration FROM
 - si vous avez des erreurs lors de l'execution de xdebug telquelle `Notice: Undefined index:` cela signifie qu'il manque une verification isset de vos parametres transmis.
 - si erreur `Warning: move_uploaded_file(file): failed to open stream` verifier que le repertoire cible existe sur le serveur a l'aide de `echo realpath($sTempFileName)` + Check [Bug fix php.net](https://www.php.net/manual/en/function.move-uploaded-file) + verifier votre configuration de fichier php.ini
 - Pour charger votre video sur une page, une erreur peux survenir `web Not allowed to load local resource`.
-- Probleme serceur distant:
-  Au prealable installer a l'aide de google plateform , par exemple , un serveur distant. Installer Filezila server [Solution rtapide avec filezilla server](https://www.youtube.com/watch?v=IDupV3NBz6g&ab_channel=BTNHD)
+- Probleme serveur distant: Installer Filezila server [Solution rtapide avec filezilla server](https://www.youtube.com/watch?v=IDupV3NBz6g&ab_channel=BTNHD).
+
+> ** Tag php sous vscode a l'aide d4un snipper
+
+* Open Preferences > User Snippets > Select html.json (HTML)
+
+```json
+"php": {
+    "prefix": "php",
+    "body": [ "<?php $1 ?>" ],
+    "description": "php tag"
+}
+```
