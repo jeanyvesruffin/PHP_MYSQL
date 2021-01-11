@@ -34,11 +34,11 @@
 - [Transmettez des donnees de page en page](#transmettez-des-donnees-de-page-en-page)
     - [Transmettez des donnees avec l'URL](#transmettez-des-donnees-avec-lurl)
     - [Transmettez des donnees avec les formulaires](#transmettez-des-donnees-avec-les-formulaires)
-    - [TP1 : Page protegee par mot de passe](#tp1--page-protegee-par-mot-de-passe)
+    - [TP1 Page protegee par mot de passe](#tp1-page-protegee-par-mot-de-passe)
     - [Variables superglobales](#variables-superglobales)
         - [Exemple variable superglobal](#exemple-variable-superglobal)
     - [Session & Cookies](#session--cookies)
-        - [xemple SESSION](#xemple-session)
+        - [Exemple SESSION](#exemple-session)
         - [Exemple COOKIE](#exemple-cookie)
     - [Lisez et ecrivez dans un fichier](#lisez-et-ecrivez-dans-un-fichier)
 - [Base de donnees](#base-de-donnees)
@@ -55,6 +55,7 @@
         - [Exemple d'update de donnees avec requete prepare](#exemple-dupdate-de-donnees-avec-requete-prepare)
         - [Exemple Delete](#exemple-delete)
     - [Gestion des erreurs](#gestion-des-erreurs)
+    - [TP2 Minichat](#tp2-minichat)
     - [Les fonctions SQL](#les-fonctions-sql)
         - [Exemple fonction scalaire UPPER, LOWER, LENGTH, ROUND](#exemple-fonction-scalaire-upper-lower-length-round)
         - [Exemple fonction d'agregat AVG, SUM, MAX, MIN, COUNT](#exemple-fonction-dagregat-avg-sum-max-min-count)
@@ -62,6 +63,7 @@
     - [Les dates en SQL](#les-dates-en-sql)
         - [Exemple date](#exemple-date)
         - [Exemple fonction date: NOW(), CURDATE(), CURTIME(), DAY(), MONTH(), YEAR(), HOUR() , MINUTE() , SECOND(), DATE_FORMAT(), DATE_ADD() et DATE_SUB()](#exemple-fonction-date-now-curdate-curtime-day-month-year-hour--minute--second-date_format-date_add-et-date_sub)
+    - [TP3 Blog](#tp3-blog)
     - [Les jointures entre tables](#les-jointures-entre-tables)
         - [Exemple jointure interne avec INNER JOIN](#exemple-jointure-interne-avec-inner-join)
         - [Exemple jointure externe avec LEFT JOIN](#exemple-jointure-externe-avec-left-join)
@@ -76,6 +78,7 @@
         - [Exemple de capture et remplacement](#exemple-de-capture-et-remplacement)
         - [Exemple BBCode](#exemple-bbcode)
         - [Exemple complet BBCode](#exemple-complet-bbcode)
+    - [TP4 Espace membres](#tp4-espace-membres)
 - [Bug fix et tips](#bug-fix-et-tips)
 
 <!-- /TOC -->
@@ -468,7 +471,6 @@ $position = array_search('Banane', $fruits2);
 echo '"Banane" se trouve en position ' . $position;
 ?>
 ```
-
 ## Les fonctions
 
 - Les fonctions sont des blocs de code qui executent des instructions en fonction de certains parametres.
@@ -524,7 +526,7 @@ include("file.php");
 - Pour eviter la faille XSS, il suffit d'appliquer la fonction htmlspecialchars sur tous les textes envoyes par vos visiteurs que vous afficherez.
 - Les formulaires permettent d'envoyer des fichiers. On retrouve les informations sur les fichiers envoyes dans un array `$_FILES`. Leur traitement est cependant plus complexe.
 
-## TP1 : Page protegee par mot de passe
+## TP1 Page protegee par mot de passe
 
 [TP1\formulaire.php](TP1\formulaire.php)
 [TP1\secret.php](TP1\secret.php)
@@ -553,7 +555,7 @@ print_r($_SERVER);
 - La superglobale `$_SESSION` permet de stocker des informations qui seront automatiquement transmises de page en page pendant toute la duree de visite d'un internaute sur votre site. Il faut au prealable activer les sessions en appelant la fonction `session_start()`.
 - La superglobale `$_COOKIE` represente le contenu de tous les cookies stockes par votre site sur l'ordinateur du visiteur. Les cookies sont de petits fichiers que l'on peut ecrire sur la machine du visiteur pour retenir par exemple son nom. On cree un cookie avec la fonction `setcookie()`.
 
-### xemple SESSION
+### Exemple SESSION
 
 ```php
 // session id
@@ -849,6 +851,10 @@ PHP indique si une erreur avec MySQL est intervenue.
 $reponse = $bdd->query('SELECT nom FROM jeux_video') or die(print_r($bdd->errorInfo()));
 ?>
 ```
+## TP2 Minichat
+
+[Minichat](TP2_MiniChat\minichat.php)
+[Minichat](TP2_MiniChat\minichat_post.php)
 
 ## Les fonctions SQL
 
@@ -924,6 +930,10 @@ SELECT pseudo, message, DATE_FORMAT(date, '%d/%m/%Y %Hh%imin%ss') AS date FROM m
 -- ajouter ou soustraire des dates DATE_ADD()  et DATE_SUB()
 SELECT pseudo, message, DATE_ADD(date, INTERVAL 2 MONTH) AS date_expiration FROM minichat
 ```
+## TP3 Blog
+
+[index](TP3_BLOG\index.php)
+[commentaires](TP3_BLOG\commentaires.php)
 
 ## Les jointures entre tables
 
@@ -1153,11 +1163,14 @@ if (isset($_POST['texte']))
 </p>
 </form>
 ```
+## TP4 Espace membres
 
-
-
-
-
+[inscription](TP4_espece_membres\inscription.php)
+[cibleInscription](TP4_espece_membres\cibleInscription.php)
+[connexion](TP4_espece_membres\connexion.php)
+[cibleConnexion](TP4_espece_membres\cibleConnexion.php)
+[deconnexion](TP4_espece_membres\deconnexion.php)
+[cibleConnexion](TP4_espece_membres\cibleConnexion.php)
 
 
 # Bug fix et tips
